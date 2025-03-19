@@ -1,7 +1,27 @@
+const enviroment = require('dotenv').config({ path: __dirname + "/.env" });
+
+// import libraries
 const express = require('express');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+
+// config port
 const PORT = 3000;
+
+// config aws dynamodb
+AWS.Config.update ({
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
+});
+AWS.config = config;
+
+const docClient = new AWS.DynamoDB.DocumentClient();
+const TableName = 'courses';
+
+// middleware
+const convertFormToJson = multer();
 const app = express();
-let courses = require('./data');
 
 // require middleware
 app.use(express.urlencoded({ extended: true }));
@@ -11,11 +31,30 @@ app.use(express.static('./views'));
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
+// get all courses
 app.get('/', (req, res) => {
-  return res.render('index', { courses });
+  // lấy dữ liệu từ file data.js
+  // const courses = require('./data');
+  // return res.render('index', { courses });
+
+  // lấy dữ liệu từ dynamodb
+  const params = {
+    TableName: TableName
+  };
+
+  docClient.scan(params, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Internal Server Error');
+    } else {
+      const courses = data.Items;
+      console.log("List of Courses: \n", JSON.stringify(courses));
+      return res.render('index', { courses });
+    }
+  });
 });
 
-app.post('/save', (req, res) => {
+app.post('/', convertFormToJson.fields([]), (req, res) => {
   const id = Number(req.body.id);
   const name = req.body.name;
   const course_type = req.body.course_type;
