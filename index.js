@@ -48,8 +48,15 @@ app.get('/', (req, res) => {
 
 // Add a new course
 app.post('/', convertFormToJson.fields([]), (req, res) => {
+  // Lấy thông tin khóa học từ form
   const { id, name, course_type, semester, department } = req.body;
 
+  // Kiểm tra thông tin khóa học
+  if (!id || !name || !course_type || !semester || !department) {
+    return res.status(400).send('Bad Request');
+  }
+
+  // Tạo thông tin khóa học
   const params = {
     TableName: TableName,
     Item: {
@@ -61,6 +68,7 @@ app.post('/', convertFormToJson.fields([]), (req, res) => {
     },
   };
 
+  // Thêm khóa học vào DynamoDB
   docClient.put(params, (err) => {
     if (err) {
       console.log(err);
@@ -72,6 +80,38 @@ app.post('/', convertFormToJson.fields([]), (req, res) => {
   });
 });
 
+// Delete a course
+app.post('/delete', convertFormToJson.fields([]), (req, res) => {
+  // Lấy ID khóa học cần xóa
+  const { id } = req.body;
+
+  // Kiểm tra ID khóa học
+  // Nếu không có ID thì chuyển hướng về trang chính
+  if (!id) {
+    return res.redirect('/');
+  }
+
+  // Tạo thông tin khóa học cần xóa
+  const params = {
+    TableName: TableName,
+    Key: {
+      id: Number(id),
+    },
+  };
+
+  // Xóa khóa học khỏi DynamoDB
+  docClient.delete(params, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Internal Server Error');
+    } else {
+      console.log(`Course with ID ${id} deleted successfully`);
+      return res.redirect('/');
+    }
+  });
+});
+
+// Port listening
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
