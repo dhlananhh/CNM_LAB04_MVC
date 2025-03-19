@@ -2,6 +2,7 @@ const enviroment = require('dotenv').config({ path: __dirname + "/.env" });
 
 const express = require('express');
 const AWS = require('aws-sdk');
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 const multer = require('multer');
 
 // Config port
