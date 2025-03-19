@@ -6,7 +6,7 @@ const AWS = require('aws-sdk');
 const multer = require('multer');
 
 // config port
-const PORT = 3000;
+const PORT = 4000;
 
 // config aws dynamodb
 AWS.config.update({
