@@ -35,7 +35,7 @@
       </div>
 
       <div class="p-6 space-y-4">
-        <form action="/save" method="post">
+        <form action="/save" method="post" enctype="multipart/form-data">
           <div class="grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-4">
               <label for="course-id" class="text-sm font-medium text-gray-900 block mb-2">
@@ -127,7 +127,7 @@
           </tr>
         </thead>
         <tbody>
-          <% courses.forEach(item => { %>
+          <% courses.forEach(item=> { %>
             <tr class="border-b border-opacity-20 dark:border-gray-300 dark:bg-gray-50">
               <td class="py-4 px-6 border-b border-gray-200">
                 <%= item.id %>
