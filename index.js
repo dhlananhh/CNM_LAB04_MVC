@@ -1,14 +1,13 @@
 const enviroment = require('dotenv').config({ path: __dirname + "/.env" });
 
-// import libraries
 const express = require('express');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 
-// config port
+// Config port
 const PORT = 4000;
 
-// config aws dynamodb
+// Config AWS DynamoDB
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
@@ -18,27 +17,22 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient();
 const TableName = 'courses';
 
-// middleware
+// Middleware
 const convertFormToJson = multer();
 const app = express();
 
-// require middleware
+// Require middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./views'));
 
-// config view
+// Config view
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// get all courses
+// Get all courses
 app.get('/', (req, res) => {
-  // lấy dữ liệu từ file data.js
-  // const courses = require('./data');
-  // return res.render('index', { courses });
-
-  // lấy dữ liệu từ dynamodb
   const params = {
-    TableName: TableName
+    TableName: TableName,
   };
 
   docClient.scan(params, (err, data) => {
@@ -47,29 +41,35 @@ app.get('/', (req, res) => {
       return res.status(500).send('Internal Server Error');
     } else {
       const courses = data.Items;
-      console.log("List of Courses: \n", JSON.stringify(courses));
       return res.render('index', { courses });
     }
   });
 });
 
+// Add a new course
 app.post('/', convertFormToJson.fields([]), (req, res) => {
-  const id = Number(req.body.id);
-  const name = req.body.name;
-  const course_type = req.body.course_type;
-  const semester = req.body.semester;
-  const department = req.body.department;
+  const { id, name, course_type, semester, department } = req.body;
 
   const params = {
-    "id": id,
-    "name": name,
-    "course_type": course_type,
-    "semester": semester,
-    "department": department
-  }
+    TableName: TableName,
+    Item: {
+      id: Number(id),
+      name: name,
+      course_type: course_type,
+      semester: semester,
+      department: department,
+    },
+  };
 
-  courses.push(params);
-  return res.redirect('/');
+  docClient.put(params, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Internal Server Error');
+    } else {
+      console.log('New course added successfully');
+      return res.redirect('/');
+    }
+  });
 });
 
 app.listen(PORT, () => {
