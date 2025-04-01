@@ -1,7 +1,8 @@
 require('dotenv').config(); // Load environment variables first
 const express = require('express');
 const AWS = require('aws-sdk');
-require('aws-sdk/lib/maintenance_mode_message').suppress = true; // Suppress SDK update messages if needed
+// require('aws-sdk/lib/maintenance_mode_message').suppress = true;
+// Suppress SDK update messages if needed
 
 // --- AWS Configuration ---
 AWS.config.update({
@@ -80,7 +81,7 @@ app.post('/add', async (req, res) => {
 	try {
 		await docClient.put(params).promise();
 		console.log(`Successfully added course with ID: ${id}`);
-		res.redirect('/'); // Redirect back to the main list
+		res.redirect('/'); // Redirect back to the main page
 	} catch (err) {
 		console.error(`Error adding course with ID ${id}:`, JSON.stringify(err, null, 2));
 		// Handle potential ConditionCheckFailedException if using ConditionExpression
