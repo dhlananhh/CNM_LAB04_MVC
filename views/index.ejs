@@ -27,23 +27,31 @@
       <div class="p-6 space-y-6">
 
         <!-- Form Create -->
-        <h2 class="text-xl font-semibold text-gray-700 border-b pb-2">Add New Course</h2>
+        <h2 class="text-xl font-semibold text-gray-700 border-b pb-2">
+          Add New Course
+        </h2>
         <form action="/add" method="POST" id="create-course" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label for="id" class="text-sm font-medium text-gray-700 block mb-1">Course ID *</label>
+              <label for="id" class="text-sm font-medium text-gray-700 block mb-1">
+                Course ID *
+              </label>
               <input type="number" name="id" id="id"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required>
             </div>
             <div>
-              <label for="name" class="text-sm font-medium text-gray-700 block mb-1">Course Name *</label>
+              <label for="name" class="text-sm font-medium text-gray-700 block mb-1">
+                Course Name *
+              </label>
               <input type="text" name="name" id="name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required>
             </div>
             <div>
-              <label for="course_type" class="text-sm font-medium text-gray-700 block mb-1">Course Type *</label>
+              <label for="course_type" class="text-sm font-medium text-gray-700 block mb-1">
+                Course Type *
+              </label>
               <select id="course_type" name="course_type"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required>
@@ -70,7 +78,9 @@
               </select>
             </div>
             <div class="md:col-span-2">
-              <label for="department" class="text-sm font-medium text-gray-700 block mb-1">Department *</label>
+              <label for="department" class="text-sm font-medium text-gray-700 block mb-1">
+                Department *
+              </label>
               <input type="text" name="department" id="department"
                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required>
