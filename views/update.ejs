@@ -2,93 +2,91 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>
-		Update Course - <%= course.name %>
-	</title>
-	<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-	<style>
-		button {
-			transition: background-color 0.2s ease-in-out;
-		}
-	</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Update Course - <%= course.name %>
+  </title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    button {
+      transition: background-color 0.2s ease-in-out;
+    }
+  </style>
 </head>
 
 <body class="bg-gray-100 font-sans">
-	<div class="container mx-auto p-4 sm:p-6 lg:p-8">
-		<h1 class="mb-6 text-3xl font-bold text-center text-gray-800 uppercase">
-			Update Course Details
-		</h1>
+  <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <h1 class="mb-6 text-3xl font-bold text-center text-gray-800 uppercase">
+      Update Course Details
+    </h1>
 
-		<div class="bg-white border border-gray-300 rounded-lg shadow-md max-w-2xl mx-auto">
-			<div class="p-6 space-y-6">
-				<form action="/update/<%= course.id %>" method="POST" id="update-course" class="space-y-4">
-					<!-- Display ID but make it readonly as primary keys usually shouldn't change -->
-					<div>
-						<label for="id" class="text-sm font-medium text-gray-700 block mb-1">Course ID</label>
-						<input type="number" name="id_display" id="id"
-							class="bg-gray-200 border border-gray-300 text-gray-600 sm:text-sm rounded-lg focus:outline-none block w-full p-2.5 cursor-not-allowed"
-							value="<%= course.id %>" readonly>
-						<!-- Include the actual ID as a hidden field if needed, but it's better to get it from the URL param on the server -->
-						<!-- <input type="hidden" name="id" value="<%= course.id %>"> -->
-					</div>
+    <div class="bg-white border border-gray-300 rounded-lg shadow-md max-w-2xl mx-auto">
+      <div class="p-6 space-y-6">
+        <form action="/update/<%= course.id %>" method="POST" id="update-course" class="space-y-4">
+          <div>
+            <label for="id" class="text-sm font-medium text-gray-700 block mb-1">Course ID</label>
+            <input type="number" name="id_display" id="id"
+              class="bg-gray-200 border border-gray-300 text-gray-600 sm:text-sm rounded-lg focus:outline-none block w-full p-2.5 cursor-not-allowed"
+              value="<%= course.id %>" readonly>
+          </div>
 
-					<div>
-						<label for="name" class="text-sm font-medium text-gray-700 block mb-1">Course Name *</label>
-						<input type="text" name="name" id="name"
-							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-							value="<%= course.name %>" required>
-					</div>
+          <div>
+            <label for="name" class="text-sm font-medium text-gray-700 block mb-1">Course Name *</label>
+            <input type="text" name="name" id="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              value="<%= course.name %>" required>
+          </div>
 
-					<div>
-						<label for="course_type" class="text-sm font-medium text-gray-700 block mb-1">Course Type
-							*</label>
-						<select id="course_type" name="course_type"
-							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-							required>
-							<option value="Cơ sở" <%=course.course_type==='Cơ sở' ? 'selected' : '' %>>Cơ sở</option>
-							<option value="Cơ sở ngành" <%=course.course_type==='Cơ sở ngành' ? 'selected' : '' %>>Cơ sở
-								ngành</option>
-							<option value="Chuyên ngành" <%=course.course_type==='Chuyên ngành' ? 'selected' : '' %>
-								>Chuyên ngành</option>
-						</select>
-					</div>
+          <div>
+            <label for="course_type" class="text-sm font-medium text-gray-700 block mb-1">Course Type
+              *</label>
+            <select id="course_type" name="course_type"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              required>
+              <option value="Cơ sở" <%=course.course_type==='Cơ sở' ? 'selected' : '' %>>Cơ sở</option>
+              <option value="Cơ sở ngành" <%=course.course_type==='Cơ sở ngành' ? 'selected' : '' %>>Cơ sở
+                ngành</option>
+              <option value="Chuyên ngành" <%=course.course_type==='Chuyên ngành' ? 'selected' : '' %>
+                >Chuyên ngành</option>
+            </select>
+          </div>
 
-					<div>
-						<label for="semester" class="text-sm font-medium text-gray-700 block mb-1">Semester *</label>
-						<select id="semester" name="semester"
-							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-							required>
-							<option value="">Select Semester</option>
-							<% const semesters=["HK1/2020-2021", "HK2/2020-2021" , "HK1/2021-2022" , "HK2/2021-2022"
-								, "HK1/2022-2023" , "HK2/2022-2023" , "HK1/2023-2024" , "HK2/2023-2024" ]; %>
-								<% semesters.forEach(sem=> { %>
-									<option value="<%= sem %>" <%=course.semester===sem ? 'selected' : '' %>><%= sem %>
-									</option>
-									<% }); %>
-						</select>
-					</div>
+          <div>
+            <label for="semester" class="text-sm font-medium text-gray-700 block mb-1">Semester *</label>
+            <select id="semester" name="semester"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              required>
+              <option value="">Select Semester</option>
+              <% const semesters=["HK1/2020-2021", "HK2/2020-2021" , "HK1/2021-2022" , "HK2/2021-2022" , "HK1/2022-2023"
+                , "HK2/2022-2023" , "HK1/2023-2024" , "HK2/2023-2024" ]; %>
+                <% semesters.forEach(sem=> { %>
+                  <option value="<%= sem %>" <%=course.semester===sem ? 'selected' : '' %>><%= sem %>
+                  </option>
+                  <% }); %>
+            </select>
+          </div>
 
-					<div>
-						<label for="department" class="text-sm font-medium text-gray-700 block mb-1">Department
-							*</label>
-						<input type="text" name="department" id="department"
-							class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-							value="<%= course.department %>" required>
-					</div>
+          <div>
+            <label for="department" class="text-sm font-medium text-gray-700 block mb-1">Department
+              *</label>
+            <input type="text" name="department" id="department"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              value="<%= course.department %>" required>
+          </div>
 
-					<div class="flex justify-center space-x-4 pt-2">
-						<button
-							class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
-							type="submit">Save Changes</button>
-						<a href="/"
-							class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline no-underline">Cancel</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+          <div class="flex justify-center space-x-4 pt-2">
+            <button
+              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+              type="submit">Save Changes</button>
+            <a href="/"
+              class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline no-underline">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <%- include('../fragments/footer') %>
+  </div>
 </body>
 
 </html>
